@@ -41,15 +41,18 @@ class ChexnetTrainer ():
     #---- launchTimestamp - date/time, used to assign unique name for the checkpoint file
     #---- checkpoint - if not None loads the model and continues training
     
-    def train (self, pathDirData, pathFileTrain, pathFileVal, nnArchitecture, nnIsTrained, nnClassCount, trBatchSize, trMaxEpoch, transResize, transCrop, launchTimestamp, checkpoint):
-
-        
+    def train(self, pathDirData, pathFileTrain, pathFileVal, nnArchitecture, nnIsTrained, nnClassCount, trBatchSize, trMaxEpoch, transResize, transCrop, launchTimestamp, checkpoint):
         #-------------------- SETTINGS: NETWORK ARCHITECTURE
-        if nnArchitecture == 'DENSE-NET-121': model = DenseNet121(nnClassCount, nnIsTrained).cuda()
-        elif nnArchitecture == 'DENSE-NET-169': model = DenseNet169(nnClassCount, nnIsTrained).cuda()
-        elif nnArchitecture == 'DENSE-NET-201': model = DenseNet201(nnClassCount, nnIsTrained).cuda()
-        elif nnArchitecture == 'ResNet-18': model = ResNet18(nnClassCount, nnIsTrained).cuda()
-        elif nnArchitecture == 'ResNet-50': model = ResNet50(nnClassCount, nnIsTrained).cuda()
+        if nnArchitecture == 'DENSE-NET-121':
+            model = DenseNet121(nnClassCount, nnIsTrained).cuda()
+        elif nnArchitecture == 'DENSE-NET-169':
+            model = DenseNet169(nnClassCount, nnIsTrained).cuda()
+        elif nnArchitecture == 'DENSE-NET-201':
+            model = DenseNet201(nnClassCount, nnIsTrained).cuda()
+        elif nnArchitecture == 'ResNet-18':
+            model = ResNet18(nnClassCount, nnIsTrained).cuda()
+        elif nnArchitecture == 'ResNet-50':
+            model = ResNet50(nnClassCount, nnIsTrained).cuda()
         
         model = torch.nn.DataParallel(model).cuda()
                 
@@ -65,7 +68,7 @@ class ChexnetTrainer ():
 
         #-------------------- SETTINGS: DATASET BUILDERS
         datasetTrain = DatasetGenerator(pathImageDirectory=pathDirData, pathDatasetFile=pathFileTrain, transform=transformSequence)
-        datasetVal =   DatasetGenerator(pathImageDirectory=pathDirData, pathDatasetFile=pathFileVal, transform=transformSequence)
+        datasetVal =  DatasetGenerator(pathImageDirectory=pathDirData, pathDatasetFile=pathFileVal, transform=transformSequence)
               
         dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
         dataLoaderVal = DataLoader(dataset=datasetVal, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
@@ -83,7 +86,6 @@ class ChexnetTrainer ():
             model.load_state_dict(modelCheckpoint['state_dict'])
             optimizer.load_state_dict(modelCheckpoint['optimizer'])
 
-        
         #---- TRAIN THE NETWORK
         
         lossMIN = 100000
@@ -106,10 +108,10 @@ class ChexnetTrainer ():
             if lossVal < lossMIN:
                 lossMIN = lossVal    
                 torch.save({'epoch': epochID + 1, 'state_dict': model.state_dict(), 'best_loss': lossMIN, 'optimizer' : optimizer.state_dict()}, 'm-' + launchTimestamp + '.pth.tar')
-                print ('Epoch [' + str(epochID + 1) + '] [save] [' + timestampEND + '] loss= ' + str(lossVal))
+                print('Epoch [' + str(epochID + 1) + '] [save] [' + timestampEND + '] loss= ' + str(lossVal))
             else:
-                print ('Epoch [' + str(epochID + 1) + '] [----] [' + timestampEND + '] loss= ' + str(lossVal))
-            if epochID == trMaxEpoch-1:
+                print('Epoch [' + str(epochID + 1) + '] [----] [' + timestampEND + '] loss= ' + str(lossVal))
+            if epochID == trMaxEpoch:
                 torch.save({'epoch': epochID + 1, 'state_dict': model.state_dict(), 'best_loss': lossMIN, 'optimizer' : optimizer.state_dict()}, 'm-final-checkpoint'  + '.pth.tar')
                      
     #-------------------------------------------------------------------------------- 
@@ -198,7 +200,7 @@ class ChexnetTrainer ():
     #---- launchTimestamp - date/time, used to assign unique name for the checkpoint file
     #---- checkpoint - if not None loads the model and continues training
     
-    def test (self, pathDirData, pathFileTest, pathModel, nnArchitecture, nnClassCount, nnIsTrained, trBatchSize, transResize, transCrop, launchTimeStamp):   
+    def test (self, pathDirData, pathFileTest, pathModel, nnArchitecture, nnClassCount, nnIsTrained, trBatchSize, transResize, transCrop):
         
         
         CLASS_NAMES = [ 'Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltration', 'Mass', 'Nodule', 'Pneumonia',
