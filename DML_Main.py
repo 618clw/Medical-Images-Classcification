@@ -11,8 +11,8 @@ from DMLTrainer import DMLTrainer
 # --------------------------------------------------------------------------------
 
 def main():
-    #runTest()
-    runTrain()
+    runTest()
+    #runTrain()
 
 
 # --------------------------------------------------------------------------------
@@ -47,8 +47,8 @@ def runTrain():
     imgtransResize = 256
     imgtransCrop = 224
 
-    pathModel_1 = 'm-' + timestampLaunch + '.pth.tar'
-    pathModel_2 = 'm-' + timestampLaunch + '.pth.tar'
+    pathModel_1 = 'm1-' + timestampLaunch + '.pth.tar'
+    pathModel_2 = 'm2-' + timestampLaunch + '.pth.tar'
 
     #print('Training NN architecture = ', nnArchitecture)
     Trainer = DMLTrainer()
@@ -74,8 +74,8 @@ def runTest():
     imgtransResize = 256
     imgtransCrop = 224
 
-    pathModel_1 = 'm1-' + '21052018-113757' + '.pth.tar'
-    pathModel_2 = 'm2-' + '21052018-113757' + '.pth.tar'
+    pathModel_1 = 'm1-' + '21052018-145245' + '.pth.tar'
+    pathModel_2 = 'm2-' + '21052018-145245' + '.pth.tar'
     # pathModel = './m-13052018-181616.pth.tar'
 
     timestampLaunch = ''
