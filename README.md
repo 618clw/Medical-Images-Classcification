@@ -54,6 +54,7 @@ Comparing with the original CheXNet, the average AUROC of our model is almost th
 ## Contributions
 
 The work was finished by 618clw collaboratively. Letters c means Yifan Chen, while l represents Zheyi Li, and w stands for Boyu Wang.
+Note that "618" represents our dormitory room number. Please DO NOT recognize it as the JingDong's sales promotion day!
 
 ## Our Group
 
